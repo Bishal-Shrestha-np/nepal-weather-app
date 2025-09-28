@@ -1091,5 +1091,39 @@
             };
             window.requestAnimationFrame(step);
         }
+        // Add weather tips based on conditions
+        function getWeatherTip(condition, temperature) {
+            if (condition.includes('rain')) {
+                return "Don't forget your umbrella!";
+            }
+            if (condition.includes('clear') && temperature > 25) {
+                return "Perfect weather for outdoor activities!";
+            }
+            if (condition.includes('cloud') && temperature < 15) {
+                return "It might be cooler than expected, dress warmly.";
+            }
+            if (condition.includes('mist') || condition.includes('fog')) {
+                return "Visibility may be reduced, drive carefully.";
+            }
+            return "Have a great day in " + document.getElementById('cityName').textContent + "!";
+        }
 
+        // Enhanced error handling
+        window.addEventListener('error', function(e) {
+            console.error('Application error:', e.error);
+            showToast('An unexpected error occurred', 'error');
+        });
+
+        // Handle offline/online status
+        window.addEventListener('offline', function() {
+            showToast('You are offline. Weather data may not be current.', 'error');
+        });
+
+        window.addEventListener('online', function() {
+            showToast('Connection restored. Refreshing weather data...');
+            retryWeatherFetch();
+        });
+    </script>
+</body>
+</html>
        
