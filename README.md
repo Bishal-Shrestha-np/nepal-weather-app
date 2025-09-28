@@ -1,3 +1,4 @@
+<p style="margin:0; padding:0;">
 # Nepal Weather App 🌤️🇳🇵
 A comprehensive Django-based weather application providing real-time weather information for cities across Nepal. Features a beautiful glassmorphism UI design with interactive charts and forecasts.
 
@@ -11,3 +12,4 @@ Nepali Language Support: City names in both English and Nepali script
 Auto-refresh: Weather data updates automatically every 30 minutes
 Offline Detection: Handles network connectivity issues gracefully
 Beautiful UI: Modern glassmorphism design with smooth animations
+</p>
