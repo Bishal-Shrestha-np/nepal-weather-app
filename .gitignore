@@ -207,3 +207,4 @@ marimo/_lsp/
 __marimo__/
 
 nepal_weather/.env
+.DS_Store
