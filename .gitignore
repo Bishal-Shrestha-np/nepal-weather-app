@@ -211,7 +211,6 @@ nepal_weather/.env
 nepal_weather_env/
 
 
-*.sqlite3
 *.log
 
 
@@ -237,5 +236,5 @@ venv.bak/
 .pdm-python
 .pdm-build/
 .DS_Store
-*.sqlite3
-*.log
+db.sqlite3
+weather.log
