@@ -19,6 +19,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -45,11 +46,14 @@ TEMPLATES = [
     },
 ]
 
+import dj_database_url
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(
+        conn_max_age=600,
+        conn_health_checks=True,
+        default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}"
+    )
 }
 
 STATIC_URL = '/static/'
@@ -57,6 +61,20 @@ STATICFILES_DIRS = [
     BASE_DIR / 'weather/static',
 ]
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+# Following settings only take effect in production
+if not DEBUG:
+    ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+    RENDER_EXTERNAL_HOSTNAME = config('RENDER_EXTERNAL_HOSTNAME', default=None)
+    if RENDER_EXTERNAL_HOSTNAME:
+        ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
+    
+    STORAGES = {
+        "staticfiles": {
+            "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+        },
+    }
+
 
 # Weather API Configuration
 OPENWEATHER_API_KEY = config('OPENWEATHER_API_KEY', default='your_api_key_here')
@@ -96,7 +114,11 @@ LOGGING = {
         },
     },
 }
+
 ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
+if RENDER_EXTERNAL_HOSTNAME:
+    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / "media"
